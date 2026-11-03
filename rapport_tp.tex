@@ -1,0 +1,197 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage{listings}
+
+\geometry{margin=2.4cm}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+\definecolor{primary}{HTML}{1F4E78}
+\definecolor{lightgray}{HTML}{F3F5F7}
+
+\lstdefinestyle{databox}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{lightgray},
+  frame=single,
+  rulecolor=\color{primary},
+  framesep=6pt,
+  xleftmargin=0.02\textwidth,
+  xrightmargin=0.02\textwidth,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primary,
+  urlcolor=primary,
+  pdftitle={TP1 Acces aux donnees et interoperabilite},
+  pdfauthor={Etudiant}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{TP1 Accès aux données et interopérabilité}
+\fancyhead[R]{Rapport }
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcommand{\capture}[3]{%
+  \begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.96\textwidth,height=0.56\textheight,keepaspectratio]{#2}%
+    \caption{#3}
+    \label{fig:#1}
+  \end{figure}
+}
+
+\newcommand{\codeinline}[1]{\texttt{\detokenize{#1}}}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  \vspace*{1.4cm}
+
+  \vspace{2.2cm}
+  {\Huge\bfseries\color{primary} TP1 Accès aux données et interopérabilité\par}
+  \vspace{0.5cm}
+  {\LARGE Rapport des fonctionnalités\par}
+  \vspace{2.4cm}
+
+  \begin{tabular}{>{\bfseries}p{4.2cm}p{8.5cm}}
+    Réalisé par & NAJID Adam \\
+    Filière et groupe & DIAGI \\
+    Encadrant & KOUISS Khalid \\
+    Année universitaire & 2026--2027 \\
+  \end{tabular}
+
+  \vfill
+  {\large Date de remise : 03/11/2026\par}
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Présentation du projet}
+
+Le TP a été réalisé en Python avec une interface graphique Tkinter. Il regroupe cinq fonctionnalités principales : une calculatrice, un stockage dans un fichier texte, un stockage XML, une base locale SQLite et une connexion SQL Server par ODBC.
+
+Chaque ordre de fabrication contient une référence OF, une référence pièce, une référence client, une quantité et une date de fin. Les applications de gestion permettent d'ajouter, consulter, modifier et supprimer ces informations.
+
+La connexion au serveur distant prévu dans le sujet n'a pas pu être établie, car ce serveur n'était plus joignable pendant la réalisation. Afin de conserver et de tester la partie ODBC, une simulation locale a donc été créée avec SQL Server LocalDB. Elle utilise un véritable pilote ODBC, de vraies requêtes SQL Server et des données fictives locales.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Résumé des applications réalisées}
+  \begin{tabularx}{\textwidth}{>{\bfseries}p{3.2cm}X}
+    \toprule
+    Application & Fonction principale \\
+    \midrule
+    Calculatrice & Addition, soustraction, multiplication et division \\
+    Fichier texte & Gestion CRUD des ordres dans \codeinline{data/ordres.txt} \\
+    Fichier XML & Gestion CRUD des ordres dans \codeinline{data/ordres.xml} \\
+    Base locale & Gestion CRUD avec SQLite et trois tables relationnelles \\
+    Base ODBC & Consultation des opérateurs, machines et pièces avec LocalDB \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Fonctionnalités principales}
+
+\subsection{Application 1 Calculatrice}
+
+La calculatrice utilise deux valeurs numériques et propose les quatre opérations élémentaires. Le résultat est affiché directement dans l'interface. Les saisies non numériques et la division par zéro produisent un message d'erreur.
+
+\capture{calculatrice}{Screenshots/Screenshot 2026-11-03 103057.png}{Interface de la calculatrice}
+\FloatBarrier
+
+\subsection{Application 2 Fichier texte}
+
+Cette application conserve les ordres de fabrication dans un fichier texte tabulé UTF-8. L'utilisateur peut ajouter, rechercher, modifier ou supprimer un OF. La liste est actualisée après chaque opération et les écritures sont sécurisées par un fichier temporaire.
+
+\begin{lstlisting}[style=databox,title={\textbf{Contenu initial du fichier texte}}]
+ref_of  ref_piece  ref_client  quantity  end_date
+OF123   PieceX     ClientA     10        2023-01-15
+OF456   PieceY     ClientB     20        2023-02-28
+\end{lstlisting}
+
+\capture{texte-liste}{Screenshots/Screenshot 2026-11-03 103106.png}{Gestion des ordres enregistrés dans le fichier texte}
+\FloatBarrier
+
+\subsection{Application 3 Fichier XML}
+
+Les mêmes opérations CRUD sont disponibles avec un document XML. Chaque élément \codeinline{Commande} contient les cinq champs d'un OF. Le fichier est indenté afin de rester lisible dans un éditeur.
+
+\begin{lstlisting}[style=databox,title={\textbf{Contenu initial du fichier XML}}]
+<?xml version='1.0' encoding='utf-8'?>
+<Commandes>
+  <Commande>
+    <Ref_OF>OF123</Ref_OF>
+    <Ref_Piece>PieceX</Ref_Piece>
+    <Ref_Client>ClientA</Ref_Client>
+    <Quantite>10</Quantite>
+    <Date_Livraison>2023-01-15</Date_Livraison>
+  </Commande>
+  <Commande>
+    <Ref_OF>OF456</Ref_OF>
+    <Ref_Piece>PieceY</Ref_Piece>
+    <Ref_Client>ClientB</Ref_Client>
+    <Quantite>20</Quantite>
+    <Date_Livraison>2023-02-28</Date_Livraison>
+  </Commande>
+</Commandes>
+\end{lstlisting}
+
+\capture{xml-interface}{Screenshots/Screenshot 2026-11-03 103112.png}{Gestion des ordres enregistrés dans le fichier XML}
+\FloatBarrier
+
+\subsection{Application 4 Base locale SQLite}
+
+La base locale contient \codeinline{OF_Tab}, \codeinline{Piece_Tab} et \codeinline{Client_Tab}. Elle applique les mêmes fonctions CRUD et utilise des requêtes paramétrées. Les références pièce et client sont créées automatiquement lors de l'ajout d'un OF.
+
+\capture{sqlite-interface}{Screenshots/Screenshot 2026-11-03 103119.png}{Gestion des ordres dans la base locale SQLite}
+\FloatBarrier
+
+\subsection{Application 5 ODBC et simulation locale}
+
+Le serveur distant n'étant plus accessible, la connexion demandée n'a pas pu être testée sur ce serveur. La fonctionnalité a été reproduite localement avec l'instance \codeinline{(localdb)\MSSQLLocalDB} et la base \codeinline{TP_IP_Local}.
+
+Le bouton \textbf{Initialiser la simulation} démarre LocalDB, crée la base et ajoute trois opérateurs, trois machines et trois pièces. Les boutons de consultation exécutent ensuite des requêtes ODBC en lecture seule. L'application peut toujours être reconfigurée pour un serveur réel en modifiant le DSN ou les paramètres de connexion.
+
+\capture{odbc-simulation}{Screenshots/Screenshot 2026-11-03 103128.png}{Simulation locale ODBC et consultation de la table des pièces}
+\FloatBarrier
+
+\section{Validation et tests}
+
+Les champs obligatoires, la longueur des références, la quantité positive et le format de la date sont vérifiés avant l'enregistrement. Les doublons, les références inconnues et les erreurs de connexion sont également traités par des messages graphiques.
+
+Huit tests automatisés vérifient le modèle, les opérations CRUD TXT, XML et SQLite, ainsi que la configuration ODBC locale. Tous les tests ont réussi. La simulation ODBC a aussi été initialisée deux fois sans duplication des données.
+
+\section{Conclusion}
+
+La solution couvre les principaux modes d'accès aux données demandés dans le TP. Malgré l'impossibilité de joindre le serveur distant, la simulation SQL Server LocalDB a permis de conserver une connexion ODBC réelle et de démontrer la consultation des opérateurs, des machines et des pièces. L'application reste configurable pour un futur serveur distant.
+
+\end{document}
+

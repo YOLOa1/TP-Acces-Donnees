@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+
+# Donnees et bases generees localement
+*.sqlite3
+*.db
+*.db-journal
+
+# Fichiers temporaires et rendus de verification
+tmp/
+.tp_subject_media/
+.tp_subject_render/
+captures/
+
+# Sources du sujet, conservees localement mais inutiles au depot
+/1TP_AccesBdDonnees.docx
+/Annexe1_VB_BdB.doc
+
+# Artefacts de compilation LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex*
+*.toc
+/rapport_tp.pdf
+
+# Le PDF final du rapport reste versionne
+/output/pdf/*
+!/output/pdf/rapport_tp.pdf
+
+# Fichiers systeme et editeurs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

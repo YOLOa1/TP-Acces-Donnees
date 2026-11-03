@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Commandes>
+  <Commande>
+    <Ref_OF>OF456</Ref_OF>
+    <Ref_Piece>PieceY</Ref_Piece>
+    <Ref_Client>ClientB</Ref_Client>
+    <Quantite>20</Quantite>
+    <Date_Livraison>2023-02-28</Date_Livraison>
+  </Commande>
+  <Commande>
+    <Ref_OF>OF001</Ref_OF>
+    <Ref_Piece>PieceO</Ref_Piece>
+    <Ref_Client>ClientX</Ref_Client>
+    <Quantite>3</Quantite>
+    <Date_Livraison>2026-01-01</Date_Livraison>
+  </Commande>
+  <Commande>
+    <Ref_OF>OF202</Ref_OF>
+    <Ref_Piece>PieceC</Ref_Piece>
+    <Ref_Client>ClientA</Ref_Client>
+    <Quantite>1</Quantite>
+    <Date_Livraison>2026-01-02</Date_Livraison>
+  </Commande>
+</Commandes>

@@ -1,0 +1,2 @@
+ref_of	ref_piece	ref_client	quantity	end_date
+OF456	PieceY	ClientB	20	2023-02-28
